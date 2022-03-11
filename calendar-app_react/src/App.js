@@ -1,23 +1,59 @@
-import logo from './logo.svg';
 import './App.css';
+import { Calendar, dateFnsLocalizer } from "react-big-calendar";
+import format from "date-fns/format";
+import parse from "date-fns/parse";
+import startOfWeek from "date-fns/startOfWeek";
+import getDay from "date-fns/getDay";
+import "react-big-calendar/lib/css/react-big-calendar.css";
+import React, { useState } from "react";
+import DatePicker from "react-datepicker";
+
+
+const locales = {
+  "en-US": require("date-fns/locale/en-US")
+}
+
+const localizer = dateFnsLocalizer ({
+  format,
+  parse,
+  startOfWeek,
+  getDay,
+  locales
+})
+
+const events = [
+  {
+    title: "Entrainement foot",
+    allDay: true,
+    start: new Date(2022,4,22),
+    end: new Date(2022,4,26) 
+  },
+  {
+    title: "Kine",
+    start: new Date(2022,4,10),
+    end: new Date(2022,4,15) 
+  },
+  {
+    title: "Meeting",
+    start: new Date(2022,4,5),
+    end: new Date(2022,4,8) 
+  }
+]
 
 function App() {
+
+  const [newEvent, setNewEvent] = useState({title: "", start: "", end: ""})
+  const [allEvents, setAlleEvents] = useState(events)
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Calendar 
+        localizer={localizer} 
+        events={events}
+        startAccessor="start" 
+        endAccessor="end" 
+        style={{height: 500, margin: "50px"}} 
+        />
     </div>
   );
 }
